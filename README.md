@@ -13,6 +13,7 @@ An intelligent document Q&A system using RAG (Retrieval-Augmented Generation) th
 - Azure
 - Databricks
 - FastAPI
+- LangChain (RAG Framework)
 
 ## Setup
 
@@ -40,7 +41,7 @@ docker-compose run --rm rag-dev
 3. Inside the container, install dependencies:
 
 ```
-pip3 install transformers sentence-transformers torch accelerate bitsandbytes
+pip3 install transformers sentence-transformers torch accelerate bitsandbytes langchain langchain-community langchain-core pypdf chromadb
 ```
 
 ### Test the Setup
