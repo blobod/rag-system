@@ -6,6 +6,8 @@ services:
     container_name: rag-dev
     volumes:
       - .:/workspace
+    ports:
+      - "8000:8000"
     environment:
       - HF_TOKEN=${HF_TOKEN}
     deploy:

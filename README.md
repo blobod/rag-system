@@ -26,6 +26,13 @@ An intelligent document Q&A system using RAG (Retrieval-Augmented Generation) th
 
 ### Build and Run
 
+0. Create .env file that contains HF_Token
+   This should be the content of the .env:
+
+```
+HF_TOKEN=YourToken
+```
+
 1. Build the Docker container:
 
 ```
@@ -41,7 +48,7 @@ docker-compose run --rm rag-dev
 3. Inside the container, install dependencies:
 
 ```
-pip3 install transformers sentence-transformers torch accelerate bitsandbytes langchain langchain-community langchain-core pypdf chromadb
+pip3 install transformers sentence-transformers torch accelerate bitsandbytes langchain langchain-community langchain-core pypdf chromadb fastapi uvicorn python-multipart
 ```
 
 ### Test the Setup
