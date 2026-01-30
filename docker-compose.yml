@@ -6,6 +6,7 @@ services:
     container_name: rag-dev
     volumes:
       - .:/workspace
+      - ./chroma_db:/workspace/chroma_db
     ports:
       - "8000:8000"
     environment:
