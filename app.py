@@ -72,21 +72,21 @@ async def startup_event():
         )
         logger.info("Embedding model loaded successfully")
         
-        logger.info("Loading Mistral-7B (may take a few minutes)")
+        logger.info("Loading Mistral-7B")
         model_name = "mistralai/Mistral-7B-Instruct-v0.2"
-        
+
         quantization_config = BitsAndBytesConfig(
             load_in_8bit=True,
             bnb_8bit_compute_dtype=torch.float16
         )
-        
+
         tokenizer = AutoTokenizer.from_pretrained(model_name)
         model = AutoModelForCausalLM.from_pretrained(
             model_name,
             quantization_config=quantization_config,
             device_map="auto"
         )
-        
+
         pipe = pipeline(
             "text-generation",
             model=model,
@@ -96,7 +96,7 @@ async def startup_event():
             top_p=0.95,
             repetition_penalty=1.15
         )
-        
+
         llm = HuggingFacePipeline(pipeline=pipe)
         logger.info("Mistral-7B loaded")
         
@@ -173,9 +173,7 @@ async def upload_document(file: UploadFile = File(...)):
         
         # Create RAG chain
         logger.info("Creating RAG chain...")
-        template = """<s>[INST] You must ONLY use the following context to answer questions. 
-        Do NOT use any external knowledge. 
-        If the answer is not in the context, respond with exactly: "I cannot answer this based on the provided documents."
+        template = """<s>[INST] Use the following context to answer the question. If you cannot answer based on the context, say so.
 
         Context:
         {context}
@@ -254,12 +252,12 @@ async def ask_question(request: QuestionRequest):
         logger.info("Generating answer...")
         template = """<s>[INST] Use the following context to answer the question. If you cannot answer based on the context, say so.
 
-Context:
-{context}
+        Context:
+        {context}
 
-Question: {question} [/INST]
+        Question: {question} [/INST]
 
-Answer:"""
+        Answer:"""
         
         prompt = PromptTemplate.from_template(template)
         
@@ -276,7 +274,7 @@ Answer:"""
         # Generate answer
         answer = rag_chain_dynamic.invoke(request.question)
         logger.info("Answer generated successfully")
-        
+        #add answer to logger
         return AnswerResponse(
             question=request.question,
             answer=answer.strip(),
